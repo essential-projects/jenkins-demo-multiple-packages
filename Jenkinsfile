@@ -19,7 +19,7 @@ def run_meta_exec_command(command_string) {
   if (last_slash_index > 0) {
     pwd = pwd.substring(last_slash_index + 1);
   }
-  // ssh("meta exec --exclude ${pwd} '${command_string}'")
+  ssh("meta exec --exclude ${pwd} '${command_string}'")
 }
 
 pipeline {
