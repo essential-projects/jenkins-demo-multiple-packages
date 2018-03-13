@@ -3,9 +3,9 @@
 Für die Build Pipeline verwenden wir Jenkins. Die Konfiguration der Jobs
 erfolgt über ein `Jenkinsfile`, das in jedem Repository hinterlegt ist.
 
-Um mehrere Packete mit einem `Jenkinsfile` zu verarbeiten, wird `meta` verwendet.
-Mithilfe von `meta exec` werden dann die einzelnen Schritte für jedes Packet
-durchgeführt.
+Um mehrere Packete mit einem `Jenkinsfile` zu verarbeiten, wird `meta`
+verwendet; mit Hilfe von `meta exec` werden dann die einzelnen Schritte
+für jedes Packet durchgeführt.
 
 ## Konfiguration
 
@@ -28,8 +28,8 @@ Nachfolgend ist der Build Prozess in mehrere Schritte aufgeteilt:
 
 1. prepare
 
-   In diesem Schritt werden alle notwendigen Abhängigkeiten installiert. Ebenfalls können
-   hier weitere vorbereitende Aufgaben durchgeführt werden:
+   In diesem Schritt werden alle notwendigen Abhängigkeiten installiert.
+   Ebenfalls können hier weitere vorbereitende Aufgaben durchgeführt werden:
 
    ```groovy
    run_meta_exec_command 'npm install --ignore-scripts'
@@ -39,8 +39,8 @@ Nachfolgend ist der Build Prozess in mehrere Schritte aufgeteilt:
 
    In diesem Schritt wird geprüft ob der Quelltext der
    [tslint-config](https://github.com/essential-projects/tslint-config)
-   entspricht. Standartmäßig lässt ein fehlschlagen dieses Schrittes den Build **nicht**
-   fehlschlagen.
+   entspricht. Standartmäßig lässt ein fehlschlagen dieses Schrittes den
+   Build **nicht** fehlschlagen.
 
    ```groovy
    /* we do not want the linting to cause a failed build */
@@ -54,9 +54,9 @@ Nachfolgend ist der Build Prozess in mehrere Schritte aufgeteilt:
 
    In diesem Schritt wird das Paket gebaut. Für TypeScript Pakete bedeutet dies:
 
-   - den TypeScript Compiler ausführen
-   - die TypeScript Schemas erstellen
-   - die Dokumentation erstellen
+   - den TypeScript Compiler ausführen.
+   - die TypeScript Schemas erstellen.
+   - die Dokumentation erstellen.
 
    Alle anderen Pakete können hier eigene Schritte definieren, z.B. für Aurelia
    Anwendungen `au build --prod`.
@@ -82,7 +82,8 @@ Nachfolgend ist der Build Prozess in mehrere Schritte aufgeteilt:
 
    - Wenn auf der `master` Branch **und**
    - ein neuer `Commit` seit dem letzen Build gepusht wurde **und**
-   - die zu veröffentlichende Version nicht der bereits veröffentlichten entspricht
+   - die zu veröffentlichende Version nicht der bereits veröffentlichten
+   entspricht.
 
    Wird die Version mit `npm publish` veröffentlicht. Als `tag` wird
    standartmäßig `latest` verwendet.
@@ -93,9 +94,9 @@ Nachfolgend ist der Build Prozess in mehrere Schritte aufgeteilt:
 
    Wird ein neuer Versions String der aus folgenden Strings generiert:
 
-   - Die alte Version, meist `1.2.3` oder `1.2.3-rc2`
-   - Den aktuellen siebenstelligen Commit Hash
-   - Der Build Number
+   - Die alte Version, meist `1.2.3` oder `1.2.3-rc2`.
+   - Den aktuellen siebenstelligen Commit Hash.
+   - Der Build Number.
 
    Wird die Version mit `npm publish` veröffentlicht. Als `tag` wird der Name der
    Branch verwendet, dabei werden `/` mit `~` ersetzt.
