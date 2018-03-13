@@ -1,5 +1,5 @@
 {
-  "name": "@essential-projects/test-package-2",
+  "name": "@essential-projects/test_package_2",
   "publishConfig": {
     "registry": "https://www.npmjs.com"
   },
