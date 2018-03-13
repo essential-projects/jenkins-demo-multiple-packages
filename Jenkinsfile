@@ -93,7 +93,7 @@ pipeline {
                     error('Only non RC Versions are allowed in master')
                   }
 
-                  def raw_package_name = sh(script: 'node --print --eval "require(\'./package.json\').name"', returnStdout: true)
+                  def raw_package_name = sh(script: 'node --print --eval "require(\'./package.json\').name"', returnStdout: true).trim();
                   def current_published_version = sh(script: "npm show ${raw_package_name} version", returnStdout: true).trim();
                   def version_has_changed = current_published_version != raw_package_version;
 
