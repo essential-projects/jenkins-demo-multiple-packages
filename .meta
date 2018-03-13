@@ -1,7 +1,7 @@
 {
   "projects": {
-    "test-package-1": "/test-package-1.git",
-    "test-package-2": "/test-package-2.git",
-    "test-package-3": "/test-package-3.git"
+    "test_package_1": "/test_package_1.git",
+    "test_package_2": "/test_package_2.git",
+    "test_package_3": "/test_package_3.git"
   }
 }
