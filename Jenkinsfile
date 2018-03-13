@@ -87,7 +87,7 @@ pipeline {
                 if (new_commit) {
 
                   // let the build fail if the version does not match normal semver
-                  // def semver_matcher = Pattern.compile("\d+\.\d+\.\d+").matcher(package_version);
+                  def semver_matcher = package_version =~ /\d+\.\d+\.\d+/;
                   def is_version_not_semver = semver_matcher.matches() == false;
                   if (is_version_not_semver) {
                     error('Only non RC Versions are allowed in master')
