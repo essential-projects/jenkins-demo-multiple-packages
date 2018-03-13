@@ -1,0 +1,29 @@
+{
+  "name": "@essential-projects/test-package-2",
+  "publishConfig": {
+    "registry": "https://www.npmjs.com"
+  },
+  "version": "0.0.1",
+  "description": "testing",
+  "license": "MIT",
+  "main": "dist/commonjs/index.js",
+  "typings": "dist/index.d.ts",
+  "contributors": [],
+  "dependencies": {},
+  "devDependencies": {
+    "@essential-projects/tslint-config": "^0.1.0",
+    "gulp": "^3.9.1",
+    "gulptraum": "^2.2.1",
+    "gulptraum-typescript": "^1.3.8",
+    "tsconfig": "^7.0.0",
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.2"
+  },
+  "scripts": {
+    "lint": "gulp lint",
+    "build": "gulp build",
+    "build-schemas": "gulp typescript-schema",
+    "build-doc": "gulp doc",
+    "test": "gulp test"
+  }
+}
