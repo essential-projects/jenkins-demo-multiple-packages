@@ -1,10 +1,4 @@
-export interface TestInterface {
+export interface TestInterface1 {
   id: string;
 
-
 }
-
-
-
-
-
