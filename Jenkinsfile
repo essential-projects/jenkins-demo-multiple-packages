@@ -65,14 +65,12 @@ pipeline {
     stage('publish') {
       steps {
         script {
-          def json_slurper = new groovy.json.JsonSlurper();
-
           def branch = env.BRANCH_NAME;
           def branch_is_master = branch == 'master';
           def new_commit = env.GIT_PREVIOUS_COMMIT != env.GIT_COMMIT;
 
           def found_projects = sh(script: "node _ci_tools/get_meta_projects.js", returnStdout: true).trim();
-          def project_list = json_slurper.parseText(found_projects);
+          def project_list = readJSON text: found_projects;
 
           for (package_folder in project_list) {
             println "Publishing package ${package_folder}"
