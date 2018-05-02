@@ -35,10 +35,6 @@ pipeline {
   stages {
     stage('prepare') {
       steps {
-        script {
-          def gb_output = sh(script: "git branch -ar", returnStdout: true).trim();
-          println "Known Git Branches: ${gb_output}"
-        }
         nodejs(configId: env.NPM_RC_FILE, nodeJSInstallationName: env.NODE_JS_VERSION) {
           sh('node --version')
           sh('npm install --global meta')
