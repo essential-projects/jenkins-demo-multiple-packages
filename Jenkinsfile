@@ -36,7 +36,7 @@ pipeline {
     stage('prepare') {
       steps {
         def gb_output = sh(script: "git branch -ar", returnStdout: true).trim();
-        println "Known Git Branches: "$gb_output
+        println "Known Git Branches: ${gb_output}"
 
         nodejs(configId: env.NPM_RC_FILE, nodeJSInstallationName: env.NODE_JS_VERSION) {
           sh('node --version')
