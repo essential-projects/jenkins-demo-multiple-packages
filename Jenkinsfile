@@ -35,6 +35,9 @@ pipeline {
   stages {
     stage('prepare') {
       steps {
+        def gb_output = sh(script: "git branch -ar", returnStdout: true).trim();
+        println "Known Git Branches: "$gb_output
+
         nodejs(configId: env.NPM_RC_FILE, nodeJSInstallationName: env.NODE_JS_VERSION) {
           sh('node --version')
           sh('npm install --global meta')
@@ -70,9 +73,6 @@ pipeline {
           def branch = env.BRANCH_NAME;
           def branch_is_master = branch == 'master';
           def new_commit = env.GIT_PREVIOUS_COMMIT != env.GIT_COMMIT;
-
-          def gb_output = sh(script: "git branch -ar", returnStdout: true).trim();
-          println "Known Git Branches: "$gb_output
 
           def found_projects = sh(script: "node _ci_tools/get_meta_projects.js", returnStdout: true).trim();
           def project_list = json_slurper.parseText(found_projects);
