@@ -62,70 +62,79 @@ pipeline {
         run_meta_exec_command('npm run test')
       }
     }
-    stage('publish') {
-      steps {
-        script {
-          def json_slurper = new groovy.json.JsonSlurper();
+    /*
+     *
+     * TODO: This fails in our Jenkins now; Check how to fix this.
+     *
+     * Reference: https://ci.process-engine.io/blue/organizations/jenkins/essential-projects_node-lts%2Fjenkins_demo_multiple_packages/detail/master/163/pipeline
+     *
+     * Issue: https://github.com/essential-projects/jenkins_demo_multiple_packages/issues/10
+     *
+     */
+    // stage('publish') {
+    //   steps {
+    //     script {
+    //       def json_slurper = new groovy.json.JsonSlurper();
 
-          def branch = env.BRANCH_NAME;
-          def branch_is_master = branch == 'master';
-          def new_commit = env.GIT_PREVIOUS_COMMIT != env.GIT_COMMIT;
+    //       def branch = env.BRANCH_NAME;
+    //       def branch_is_master = branch == 'master';
+    //       def new_commit = env.GIT_PREVIOUS_COMMIT != env.GIT_COMMIT;
 
-          def found_projects = sh(script: "node _ci_tools/get_meta_projects.js", returnStdout: true).trim();
-          def project_list = json_slurper.parseText(found_projects);
+    //       def found_projects = sh(script: "node _ci_tools/get_meta_projects.js", returnStdout: true).trim();
+    //       def project_list = json_slurper.parseText(found_projects);
 
-          for (package_folder in project_list) {
-            println "Publishing package ${package_folder}"
+    //       for (package_folder in project_list) {
+    //         println "Publishing package ${package_folder}"
 
-            dir(package_folder) {
+    //         dir(package_folder) {
 
-              def raw_package_version = sh(script: 'node --print --eval "require(\'./package.json\').version"', returnStdout: true)
-              def package_version = raw_package_version.trim();
-              println "Package version is '${package_version}'"
+    //           def raw_package_version = sh(script: 'node --print --eval "require(\'./package.json\').version"', returnStdout: true)
+    //           def package_version = raw_package_version.trim();
+    //           println "Package version is '${package_version}'"
 
-              if (branch_is_master) {
-                if (new_commit) {
+    //           if (branch_is_master) {
+    //             if (new_commit) {
 
-                  // let the build fail if the version does not match normal semver
-                  def semver_matcher = package_version =~ /\d+\.\d+\.\d+/;
-                  def is_version_not_semver = semver_matcher.matches() == false;
-                  if (is_version_not_semver) {
-                    error('Only non RC Versions are allowed in master')
-                  }
+    //               // let the build fail if the version does not match normal semver
+    //               def semver_matcher = package_version =~ /\d+\.\d+\.\d+/;
+    //               def is_version_not_semver = semver_matcher.matches() == false;
+    //               if (is_version_not_semver) {
+    //                 error('Only non RC Versions are allowed in master')
+    //               }
 
-                  def raw_package_name = sh(script: 'node --print --eval "require(\'./package.json\').name"', returnStdout: true).trim();
-                  def current_published_version = sh(script: "npm show ${raw_package_name} version", returnStdout: true).trim();
-                  def version_has_changed = current_published_version != raw_package_version;
+    //               def raw_package_name = sh(script: 'node --print --eval "require(\'./package.json\').name"', returnStdout: true).trim();
+    //               def current_published_version = sh(script: "npm show ${raw_package_name} version", returnStdout: true).trim();
+    //               def version_has_changed = current_published_version != raw_package_version;
 
-                  if (version_has_changed) {
-                    nodejs(configId: env.NPM_RC_FILE, nodeJSInstallationName: env.NODE_JS_VERSION) {
-                      sh('node --version')
-                      sh('npm publish --ignore-scripts')
-                    }
-                  } else {
-                    println 'Skipping publish for this version. Version unchanged.'
-                  }
-                }
+    //               if (version_has_changed) {
+    //                 nodejs(configId: env.NPM_RC_FILE, nodeJSInstallationName: env.NODE_JS_VERSION) {
+    //                   sh('node --version')
+    //                   sh('npm publish --ignore-scripts')
+    //                 }
+    //               } else {
+    //                 println 'Skipping publish for this version. Version unchanged.'
+    //               }
+    //             }
 
-              } else {
-                // when not on master, publish a prerelease based on the package version, the
-                // current git commit and the build number.
-                // the published version gets tagged as the branch name.
-                def first_seven_digits_of_git_hash = env.GIT_COMMIT.substring(0, 8);
-                def publish_version = "${package_version}-${first_seven_digits_of_git_hash}-b${env.BUILD_NUMBER}";
-                def publish_tag = branch.replace("/", "~");
+    //           } else {
+    //             // when not on master, publish a prerelease based on the package version, the
+    //             // current git commit and the build number.
+    //             // the published version gets tagged as the branch name.
+    //             def first_seven_digits_of_git_hash = env.GIT_COMMIT.substring(0, 8);
+    //             def publish_version = "${package_version}-${first_seven_digits_of_git_hash}-b${env.BUILD_NUMBER}";
+    //             def publish_tag = branch.replace("/", "~");
 
-                nodejs(configId: env.NPM_RC_FILE, nodeJSInstallationName: env.NODE_JS_VERSION) {
-                  sh('node --version')
-                  sh("npm version ${publish_version} --no-git-tag-version --force")
-                  sh("npm publish --tag ${publish_tag} --ignore-scripts")
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    //             nodejs(configId: env.NPM_RC_FILE, nodeJSInstallationName: env.NODE_JS_VERSION) {
+    //               sh('node --version')
+    //               sh("npm version ${publish_version} --no-git-tag-version --force")
+    //               sh("npm publish --tag ${publish_tag} --ignore-scripts")
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
     stage('cleanup') {
       steps {
         script {
