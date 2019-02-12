@@ -52,8 +52,6 @@ pipeline {
       steps {
         sh('node --version')
         run_meta_exec_command('npm run build')
-        run_meta_exec_command('npm run build-schemas')
-        run_meta_exec_command('npm run build-doc')
       }
     }
     stage('test') {
